@@ -6,9 +6,10 @@ class CompaniesController < ApplicationController
 
   def import
   	file = params[:file]
-  	CSV.foreach(file.path) do |row|
-  		@var = row
+  	CSV.foreach(file.path, headers: true) do |row|
+  		@company_name = row['Name']
+  		Company.where(name: @company_name).first_or_create
   	end
-  	render plain: @var
+  	render plain: @company_name
   end
 end
