@@ -4,12 +4,20 @@ class CompaniesController < ApplicationController
   def new
   end
 
+  def index
+  	@companies = Company.all
+  end
+
   def import
   	file = params[:file]
   	CSV.foreach(file.path, headers: true) do |row|
   		@company_name = row['Name']
-  		Company.where(name: @company_name).first_or_create
+  		@operation_name = row['Operation']
+  		@company = Company.where(name: @company_name).first_or_create
+  		@o = Operation.where(name: @operation_name).first_or_create
+  		@o.companies << @company
+  		@o.save
   	end
-  	render plain: @company_name
+  	redirect_to companies_path
   end
 end

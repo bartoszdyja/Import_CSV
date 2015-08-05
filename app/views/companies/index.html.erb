@@ -1,0 +1,8 @@
+<% @companies.each do |c| %>
+<p><%= c.name %>
+
+<% c.operations.each do |o|  %>
+	<%= o.name %>
+	<% end %>
+</p>
+<% end %>
